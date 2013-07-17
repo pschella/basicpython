@@ -1,0 +1,1003 @@
+% Permission is granted to copy, distribute and/or modify this
+% document under the terms of the GNU Free Documentation License,
+% Version 1.3 or any later version published by the Free Software
+% Foundation; with no Invariant Sections, no Front-Cover Texts and
+% no Back-Cover Texts.  A copy of the license is included in the
+% LICENSE file in this directory.
+
+\documentclass[10pt,a4paper]{article}
+
+\usepackage{fancyvrb}
+\usepackage{a4}
+\usepackage{units}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{listings}
+
+\lstset{ %
+language=Python,                % the language of the code
+%basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+%numbers=left,                   % where to put the line-numbers
+%numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+%stepnumber=2,                   % the step between two line-numbers. If it's 1, each line 
+%                                % will be numbered
+%numbersep=5pt,                  % how far the line-numbers are from the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=single,                   % adds a frame around the code
+tabsize=4,                      % sets default tabsize to 4 spaces
+captionpos=b,                   % sets the caption-position to bottom
+breaklines=true,                % sets automatic line breaking
+breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+title=\lstname,                 % show the filename of files included with \lstinputlisting;
+                                % also try caption instead of title
+escapeinside={\%*}{*)},         % if you want to add a comment within your code
+morekeywords={*,...}            % if you want to add more keywords to the set
+}
+
+\title{Basic Python for Astronomers}
+\author{Pim Schellart}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+This guide introduces the reader to the Python programming language. It is written from the perspective of a typical Astronomer.
+\end{abstract}
+\tableofcontents
+\section{Introduction}
+Python is a programming language written in 1989 by Guido van Rossum at CWI in the Netherlands. The language has important properties that have led to its addoption by many scientists as their go to language in recent years. Its dynamic and interpreted nature allows it to be used for fast and flexible coding (at the expense of runtime speed). In addition the ease with which extensions to Python can be written in other languages have allowed for the rapid expansion of the available usefull external libraries that can now be called from Python.
+
+This tutorial gives the reader an introduction to the Python programming language from the perspective of an Astronomer. For the target audience, it attempts to cover all the nessesary points in enough detail to allow the reader to perform almost any day to day task. Specifically this tutorial should allow the reader master all this within a single day. However to reach this goal we will skip many of the more intricate details of the language. In particular this guide does not cover any programming techniques (other than basic control flow and functions) and object oriented programming is not covered at all. For excellent documentation about Python from the programmers perspective I reffer the interrested reader to the Python documentation \verb|http://docs.python.org/2/| and the Python tutorial in particular \verb|http://docs.python.org/2/tutorial/|.
+\section{Your first Python program}
+To write a Python program you can use your favorite text editor (such as \verb|vi|, \verb|emacs| or \verb|nano|). In this example we use \verb|nano|.
+\begin{itemize}
+\item Open the text editor and create a new file called \emph{hello.py} in the current directory.
+\begin{Verbatim}
+nano hello.py
+\end{Verbatim}
+\item Create a simple `hello world' program by typing:
+\begin{lstlisting}
+print "Hello world!"
+\end{lstlisting}
+save the program and close the editor.
+\item You can now execute it using:
+\begin{Verbatim}
+python hello.py
+\end{Verbatim}
+\item If we want to run it like any other program we need to change the permissions of the file \emph{hello.py} to executable:
+\begin{Verbatim}
+chmod +x hello.py
+\end{Verbatim}
+In addition we need to modify it a bit by adding one line at the top.
+\begin{lstlisting}
+#! /usr/bin/env python
+print "Hello world!"
+\end{lstlisting}
+Now the file is seen by the shell as a program.
+\item The program can now be executed like any other program by typing:
+\begin{Verbatim}
+./hello.py
+\end{Verbatim}
+\item The output of the program is:
+\begin{Verbatim}
+Hello world!
+\end{Verbatim}
+\end{itemize}
+What happens here?
+In contrast to languages such as C, C++ and FORTRAN, Python code is interpreted rather than compiled.
+The first line (starting with \verb|#|, which is a comment in Python) tells the system that the file is a Python program that should be fed to the Python interpreter.
+The Python interpreter reads the file (sometimes also called a script) and translates the human readable code into cross platform \emph{byte code}, which is subsequently executed.
+\subsection{Using the interpreter interactively}
+The great thing about Python, which makes development much easier, is the ability to use the interpreter interactively.
+To do this simply type:
+\begin{Verbatim}
+python
+\end{Verbatim}
+at the command line and hit \emph{return}.
+The interpreter is started and you get a new prompt:
+\begin{lstlisting}
+>>>
+\end{lstlisting}
+You can now type statements directly at this prompt.
+They are executed if you hit \emph{return}.
+For the `hello world' program we get:
+\begin{lstlisting}
+>>> print "Hello world!"
+Hello world!
+\end{lstlisting}
+When programming I usually have two terminals open, one with an editor to write and execute the program, and the other with the interpreter in interactive mode to test parts of my program.
+\section{Language basics}
+\subsection{Basic syntax}
+Python was intended to be a highly readable language. It aims toward an uncluttered visual layout, frequently using English keywords where other languages use punctuation. Python requires less boilerplate than traditional statically-typed structured languages such as C, and has a smaller number of syntactic exceptions.
+
+Python uses whitespace indentation, rather than curly braces or keywords, to delimit statement blocks. An increase in indentation comes after certain statements; a decrease in indentation signifies the end of the current block.
+
+When writing Python code it is important to always use \emph{use 4 spaces indentation} and \emph{avoid the use of tabs}! Mixing tabs and spaces is a frequent cause of strange errors. Best to avoid them by setting your editor to automatically insert 4 spaces when you hit tab.
+\subsection{Numeric types}
+There are several build in numerical types.
+The most frequently used ones are:
+\begin{itemize}
+\item \verb|int| (implemented as long int in C)
+\item \verb|float| (implemented as double in C)
+\item \verb|complex| (implemented as two doubles in C)
+\end{itemize}
+We can use the Python interpreter as a calculator:
+\begin{lstlisting}
+>>> 2+2  # and a comment on the same line as code
+4
+>>> 2**3
+8
+>>> (50-5*6)/4
+5
+>>> # Integer division returns the floor:
+... 7/3
+2
+>>> 7/-3
+-3
+>>> (1+2j)/(1+1j)
+(1.5+0.5j)
+\end{lstlisting}
+We can also assign values to variables.
+Python will automatically determine which type to use.
+\begin{lstlisting}
+>>> a=13
+>>> b=177.234
+>>> a*b
+2304.0419999999999
+\end{lstlisting}
+For a \emph{complex} value we can get the real and imaginary parts:
+\begin{lstlisting}
+>>> a=14.234+234j
+>>> a.real
+14.234
+>>> a.imag
+234.0
+\end{lstlisting}
+Type conversions can be done explicitly:
+\begin{lstlisting}
+>>> c=13
+# c is an int
+>>> print c
+13
+>>> c=float(13)
+# c is now a float
+>>> print c
+13.0
+>>> 12*int(c)
+156
+>>> c=complex(13)
+>>> print c
+(13+0j)
+>>> 25*int(c)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: can't convert complex to int; use int(abs(z))
+\end{lstlisting}
+The last line is a typical example of what happens when an error happens in your code.
+Code execution will stop and you will get an error message.
+To make this a bit more instructive lets put this into a file \verb|test.py|.
+\begin{lstlisting}
+c = complex(13)
+print c
+d = 25*int(c)
+\end{lstlisting}
+When executed this gives:
+\begin{lstlisting}
+(13+0j)
+Traceback (most recent call last):
+  File "test.py", line 3, in <module>
+    d = 25*int(c)
+TypeError: can't convert complex to int
+\end{lstlisting}
+Telling us a \verb|TypeError| occurred on line 3 in the file \verb|test.py| which read \verb|d = 25*int(c)|.
+This is very usefull when debugging a large program.
+\subsection{Strings}
+Strings are easily created in python.
+\begin{lstlisting}
+>>> hello="Hello world!"
+>>> print hello
+Hello world!
+\end{lstlisting}
+Strings can be concatenated (glued together) with the \verb|+| operator, and repeated with \verb|*|:
+\begin{lstlisting}
+>>> word = "Help" + "A"
+>>> print word
+HelpA
+>>> print "<" + word*5 + ">"
+<HelpAHelpAHelpAHelpAHelpA>
+\end{lstlisting}
+Strings can be subscripted (indexed); like in C, the first character of a string has subscript (index) 0. There is no separate character type; a character is simply a string of size one. Substrings can be specified with the slice notation: two indices separated by a colon.
+\begin{lstlisting}
+>>> word="Help"
+>>> word[1]
+'e'
+>>> word[0:2]
+'He'
+\end{lstlisting}
+Strings cannot be modified but a copy is easily and efficiently created using slicing.
+\begin{lstlisting}
+>>> copy=word[:]
+\end{lstlisting}
+The length of a string can be obtained using:
+\begin{lstlisting}
+>>> len(word)
+4
+\end{lstlisting}
+\subsubsection{String methods}
+There are several useful methods (functions) which apply to strings.
+\begin{itemize}
+\item \verb|strip(chars)| strips the string from all leading and trailing characters in \verb|chars| (default remove whitespace).
+\begin{lstlisting}
+>>> s="This is a test            "
+>>> s
+'This is a test            '
+>>> s.strip()
+'This is a test'
+\end{lstlisting}
+\item \verb|split(separator)| splits the string separated by separator (which is also a string) into a list (default split at whitespace).
+\begin{lstlisting}
+>>> s="apple, orange"
+>>> print s
+apple, orange
+>>> print s.split(",")
+['apple', 'orange']
+\end{lstlisting}
+\end{itemize}
+\subsection{Lists}
+Python knows a number of compound data types, used to group together other values. The most versatile is the list, which can be written as a list of comma-separated values (items) between square brackets. List items need not all have the same type.
+\begin{lstlisting}
+>>> a = ['spam', 'eggs', 100, 1234]
+>>> a
+['spam', 'eggs', 100, 1234]
+\end{lstlisting}
+Like string indices, list indices start at 0, and lists can be sliced, concatenated and so on.
+Unlike strings, which are immutable, it is possible to change individual elements of a list:
+\begin{lstlisting}
+>>> a
+['spam', 'eggs', 100, 1234]
+>>> a[2] = a[2] + 23
+>>> a
+['spam', 'eggs', 123, 1234]
+\end{lstlisting}
+Assignment to slices is also possible, and this can even change the size of the list or clear it entirely:
+\begin{lstlisting}
+>>> # Replace some items:
+... a[0:2] = [1, 12]
+>>> a
+[1, 12, 123, 1234]
+>>> # Remove some:
+... a[0:2] = []
+>>> a
+[123, 1234]
+>>> # Insert some:
+... a[1:1] = ['bletch', 'xyzzy']
+>>> a
+[123, 'bletch', 'xyzzy', 1234]
+>>> # Clear the list: replace all items with an empty list
+>>> a[:] = []
+>>> a
+[]
+\end{lstlisting}
+The built-in function \verb|len()| also applies to lists:
+\begin{lstlisting}
+>>> a = ['a', 'b', 'c', 'd']
+>>> len(a)
+4
+\end{lstlisting}
+It is possible to nest lists (create lists containing other lists), for example:
+\begin{lstlisting}
+>>> q = [2, 3]
+>>> p = [1, q, 4]
+>>> len(p)
+3
+>>> p[1]
+[2, 3]
+>>> p[1][0]
+2
+>>> p[1].append('extra')
+>>> p
+[1, [2, 3, 'extra'], 4]
+>>> q
+[2, 3, 'extra']
+\end{lstlisting}
+Note that in the last example, \verb|p[1]| and \verb|q| really refer to the same object!
+\subsubsection{The range function}
+In Python you often need a list of sequencial numbers.
+The built in \verb|range()| function comes in handy.
+\begin{lstlisting}
+>>> range(10)
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+\end{lstlisting}
+The given end point is never part of the generated list; \verb|range(10)| generates a list of 10 values, the legal indices for items of a sequence of length 10. It is possible to let the range start at another number, or to specify a different increment (even negative; sometimes this is called the step):
+\begin{lstlisting}
+>>> range(5, 10)
+[5, 6, 7, 8, 9]
+>>> range(0, 10, 3)
+[0, 3, 6, 9]
+>>> range(-10, -100, -30)
+[-10, -40, -70]
+\end{lstlisting}
+\subsection{Tuples and dictionaries}
+Some other data types that are often encountered when using Python are \emph{tuples} and \emph{dictionaries}.
+
+Tuples are basically the same as lists except that they are immutable, that is their member values cannot be changed.
+\begin{lstlisting}
+>>> x=("hello", 10, 11)
+>>> x[0]
+'hello'
+>>> x[0]=1
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'tuple' object does not support item assignment
+\end{lstlisting}
+Another useful and frequently encountered data type is the \emph{dictionary}.
+A dictionary consists of (key, value) pairs.
+\begin{lstlisting}
+>>> x = { 'apple' : 123, 'orange' : 234.34, 'pear' : None }
+>>> x
+{'orange': 234.34, 'pear': None, 'apple': 123}
+>>> x['apple']
+123
+\end{lstlisting}
+This also introduces the \verb|None| type which is used in Python to explicitly denote the lack of any value\footnote{None also evaluates to False in a comparison unless compared to None itself of course.}.
+
+A dictionary may also be constructed by passing a list of tuples containing the (key, value) pairs to the \verb|dict()| constructor.
+\begin{lstlisting}
+>>> x = dict([('apple',123), ('orange',234.34), ('pear',None)])
+>>> x
+{'orange': 234.34, 'pear': None, 'apple': 123}
+\end{lstlisting}
+Conversely a list of (key, value) pairs may be obtained from a dictionary using its \verb|items()| method.
+\begin{lstlisting}
+>>> x.items()
+[('orange', 234.34), ('pear', None), ('apple', 123)]
+\end{lstlisting}
+This is particularly useful in looping.
+\begin{lstlisting}
+>>> for i,j in x.items():
+...     print i,j
+... 
+orange 234.34
+pear None
+apple 123
+\end{lstlisting}
+
+\subsection{Control flow}
+\subsubsection{The if statement}
+In Python the syntax for the \verb|if| statement is:
+\begin{lstlisting}
+>>> x = int(raw_input("Please enter an integer: "))
+Please enter an integer: 42
+>>> if x < 0:
+...      x = 0
+...      print 'Negative changed to zero'
+... elif x == 0:
+...      print 'Zero'
+... elif x == 1:
+...      print 'Single'
+... else:
+...      print 'More'
+...
+More
+\end{lstlisting}
+Note that indentation determines the end of a block.
+There can be zero or more \verb|elif| parts, and the \verb|else| part is optional. The keyword \verb|elif| is short for \verb|else if|, and is useful to avoid excessive indentation. An \verb|if| \ldots \verb|elif| \ldots \verb|elif| \ldots sequence is a substitute for the \emph{switch} or \emph{case} statements found in other languages.
+
+The condition can be any expression which evaluates to the boolean values \verb|True| or \verb|False| and is generally composed of the operators in table \ref{tb:operators}.
+\begin{table}
+\begin{center}
+\caption{Operator precedences in Python, from lowest precedence (least binding) to highest precedence (most binding).}
+\label{tb:operators}
+\begin{tabular}{ll}
+Operator & Description\\
+\hline
+\verb|or| & Boolean OR\\
+\verb|and| & Boolean AND\\
+\verb|not x|	& Boolean NOT\\
+\verb|in, not in| & Membership tests\\
+\verb|is, is not| & Identity tests\\
+\verb|<, <=, >, >=, <>, !=, ==| & Comparisons
+\end{tabular}
+\end{center}
+\end{table}
+\subsubsection{The while statement}
+The \verb|while| loop executes as long as the condition remains true. In Python, like in C, any non-zero integer value is true; zero is false.
+\begin{lstlisting}
+>>> # Fibonacci series:
+... # the sum of two elements defines the next
+... a, b = 0, 1
+>>> while b < 6:
+...     print b
+...     a, b = b, a+b
+...
+1
+1
+2
+3
+5
+\end{lstlisting}
+\subsubsection{The break and continue statements}
+In Python there are two useful statements when working with loops:
+\begin{itemize}
+\item \verb|break| breaks out of the current (inner most) loop,
+\item \verb|continue| skips current iteration.
+\end{itemize}
+\paragraph{Where is the do until statement?}
+In Python the do until statement does not exist.
+This is because the same effect can easily be obtained using \verb|while|, \verb|if| and \verb|break|.
+\begin{lstlisting}
+>>> a=10
+>>> while True:
+...     print "Executed once"
+...     if a>5:
+...         break
+... 
+Executed once
+\end{lstlisting}
+\subsubsection{The for statement}
+The \verb|for| statement in Python differs a bit from what you may be used to in C. Rather than giving the user the ability to define both the iteration step and halting condition (as C), Python's for statement iterates over the items of any sequence (a list or a string), in the order that they appear in the sequence. For example:
+\begin{lstlisting}
+>>> lst=['apple','orange',1,5.3]
+>>> for k in lst:
+...     print k
+... 
+apple
+orange
+1
+5.3
+\end{lstlisting}
+To get the effect you are used to from C use the \verb|range()| function:
+\begin{lstlisting}
+>>> for i in range(3):
+...     print i
+... 
+0
+1
+2
+\end{lstlisting}
+If you need to loop over the index of a list combine \verb|range()| with \verb|len()|:
+\begin{lstlisting}
+>>> for i in range(len(lst)):
+...     print i, lst[i]
+... 
+0 apple
+1 orange
+2 1
+3 5.3
+\end{lstlisting}
+In the example above, where you need both the index and the value, it is more efficient to use the \verb|enumerate()| function:
+\begin{lstlisting}
+>>> for i,k in enumerate(lst):
+...     print i,k
+... 
+0 apple
+1 orange
+2 1
+3 5.3
+\end{lstlisting}
+Finally a word of warning.
+It is not safe to modify the list being iterated over in the loop.
+Use a copy created with slicing to iterate over instead, this is both fast and efficient.
+\subsubsection{The pass statement}
+The pass statement is sometimes useful (especially in interactive mode). The pass statement does nothing. It can be used when a statement is required syntactically but the program requires no action. For example:
+\begin{lstlisting}
+>>> while True:
+...     pass  # Busy-wait for keyboard interrupt (Ctrl+C)
+...
+\end{lstlisting}
+\section{Functions}
+In Python functions can be defined easily, almost anywhere in the code and used immediately.
+The syntax for declaring functions is also very simple:
+\begin{lstlisting}
+>>> def add(x,y):
+...     return x+y
+... 
+>>> add(1,1)
+2
+\end{lstlisting}
+Compared to most other programming languages Python functions are extremely flexible.
+Python functions:
+\begin{itemize}
+\item can return variables of \emph{any} type:
+\begin{lstlisting}
+>>> def test():
+...     a=[135,123,'tree']
+...     return a
+... 
+>>> print test()
+[135, 123, 'tree']
+\end{lstlisting}
+\item can \emph{return multiple variables}:
+\begin{lstlisting}
+>>> def test():
+...     return 1, 2
+... 
+>>> a,b = test()
+>>> print a, b
+1 2
+\end{lstlisting}
+\item can use \emph{default values} for flexible number of arguments:
+\begin{lstlisting}
+>>> def test(a=1,b=10,c="hello"):
+...     print a,b,c
+... 
+>>> test()
+1 10 hello
+>>> test(13,2)
+13 2 hello
+\end{lstlisting}
+\item can use \emph{named arguments}:
+\begin{lstlisting}
+>>> test(c="apple")
+1 10 apple
+\end{lstlisting}
+\item can be \emph{assigned} to other variables:
+\begin{lstlisting}
+>>> t=test
+>>> t
+<function test at 0x71db30>
+>>> t()
+1 10 hello
+\end{lstlisting}
+\end{itemize}
+It is important to note that arguments are passed \emph{call by object reference}, which means that mutable objects (such as lists) can be modified in a function.
+\begin{lstlisting}
+>>> a=[1,2,3]
+>>> def test(x):
+...     x.append(len(x)+1)
+... 
+>>> test(a)
+>>> a
+[1, 2, 3, 4]
+>>> test(a)
+>>> a
+[1, 2, 3, 4, 5]
+\end{lstlisting}
+This does not work for immutable objects such as integers and strings!
+\paragraph{Use of docstrings}
+When writing functions it is customary to use \emph{docstrings} to document what the function does.
+\begin{lstlisting}
+>>> def my_function(x):
+...     """Do nothing, but document it.
+...
+...     No, really, it doesn't do anything.
+...
+...     Parameters
+...     ----------
+...     x : int
+...         Description of parameter `x`.
+...
+...     """
+...     pass
+...
+\end{lstlisting}
+This documentation is now stored in \verb|my_function.__doc__| and printed when calling \verb|help(my_function)| or using the question mark in IPython. In addition the Python documentation tool \emph{Sphinx} can automatically extract propperly formatted docstrings from a full program and create a nicely formatted webpage or \LaTeX\ PDF document (which is how all the Python documentatation online is generated).
+\section{Modular programming}
+If you quit from the Python interpreter and enter it again, the definitions you have made (functions and variables) are lost. Therefore, if you want to write a somewhat longer program, you are better off using a text editor to prepare the input for the interpreter and running it with that file as input instead. This is known as creating a script. As your program gets longer, you may want to split it into several files for easier maintenance. You may also want to use a handy function that you've written in several programs without copying its definition into each program.
+
+To support this, Python has a way to put definitions in a file and use them in a script or in an interactive instance of the interpreter. Such a file is called a module; definitions from a module can be imported into other modules or into the main module (the collection of variables that you have access to in a script executed at the top level and in calculator mode).
+
+A module is a file containing Python definitions and statements. The file name is the module name with the suffix .py appended. Within a module, the module's name (as a string) is available as the value of the global variable \verb|__name__|. For instance, use your favorite text editor to create a file called \verb|fibonacci.py| in the current directory with the following contents:
+\begin{lstlisting}
+"""Fibonacci numbers module.
+"""
+
+def hello():
+    print "Hello World"
+
+def fibonacci(n):
+    """Return Fibonnaci series up to n.
+    """
+    result = []
+    a, b = 0, 1
+    while b < n:
+        result.append(b)
+        a, b = b, a+b
+    return result
+\end{lstlisting}
+Now enter the Python interpreter and import this module with the following command:
+\begin{lstlisting}
+>>> import fib
+\end{lstlisting}
+This does not enter the names of the functions defined in fibo directly in the current symbol table; it only enters the module name fibo there. Using the module name you can access the functions:
+\begin{lstlisting}
+>>> fibonacci.hello()
+Hello World
+>>> fibonacci.fibonacci(100)
+[1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+>>> fibonacci.__name__
+'fibonacci'
+\end{lstlisting}
+\subsection{Importing modules}
+A module can contain executable statements as well as function definitions. These statements are intended to initialize the module. They are executed only the first time the module is imported somewhere.
+
+Modules can import other modules. It is customary but not required to place all import statements at the beginning of a module (or script, for that matter).
+
+There are several ways to import a module.
+
+Lets illustrate them with the \verb|fibonnaci| example.
+\begin{lstlisting}
+>>> # Import the module
+>>> import fibonnaci
+>>> fibonnaci.hello()
+Hello World
+>>> # Import the module with a new local name
+>>> import fibonnaci as fib
+>>> fib.hello()
+Hello World
+>>> # Import one function
+>>> from fibonnaci import hello
+>>> hello()
+Hello World
+>>> # Import everything
+>>> from fibonnaci import *
+>>> hello()
+Hello World
+>>> fibonnaci(100)
+[1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+\end{lstlisting}
+While tempting to save typing the last way of importing with the \verb|*| should only be used when using the interpreter interactively to avoid confusion between identically named functions from different modules.
+\subsection{Reloading modules}
+For efficiency reasons, each module is only imported once per interpreter session. Therefore, if you change your modules, you must restart the interpreter or, if its just one module you want to test interactively, use
+\begin{lstlisting}
+reload(modulename)
+\end{lstlisting}
+\subsection{The module search path}
+When a module named \verb|spam| is imported, the interpreter searches for a file named \verb|spam.py| in the current directory, and then in the list of directories specified by the environment variable \verb|PYTHONPATH|. This has the same syntax as the shell variable \verb|PATH|, that is, a list of directory names. When \verb|PYTHONPATH| is not set, or when the file is not found there, the search continues in an installation-dependent default path; on Unix, this is usually \verb|.:/usr/local/lib/python|.
+\subsection{Packages}
+Packages are the mechanism python uses to structure the namespace.
+This is simply achieved by structuring modules into a hierarchal directory structure.
+\begin{Verbatim}
+sound/                          Top-level package
+      __init__.py               Initialize the sound package
+      formats/                  Subpackage for file formats
+              __init__.py
+              wav.py
+              mp3.py
+              ...
+      effects/                  Subpackage for sound effects
+              __init__.py
+              echo.py
+              surround.py
+              ...
+\end{Verbatim}
+The file \verb|__init__.py| is used to initialize the package.
+It can be empty or contain any Python code which is to be executed once on import.
+In order to use the \verb|from sound.effects import *| statement, the \verb|__init__.py| file in the \verb|effects| directory should contain a list of modules to be imported in the \verb|__all__| variable:
+\begin{lstlisting}
+__all__ = ["echo","surround"]
+\end{lstlisting}
+\subsection{Standard modules}
+There are a lot of modules available in Python's \emph{standard library}, which is distributed with each installation of Python. There are almost infinitely more modules available on the web.
+Some useful ones are:
+\begin{itemize}
+\item \verb|shutil|,\verb|os| and \verb|sys| operating system interfaces for such tasks as running commands and renaming files.
+\item \verb|re| regular expressions, for matching text and extracting such nasty formatted strings as right ascension and declination;
+\item \verb|numpy| fast numerical arrays for Python;
+\item \verb|scipy| extensive scientific library for such tasks as linear algebra, Fourier transforms, random number generation and optimization (least squares fitting for example);
+\item \verb|matplotlib| for 2d and 3d plotting;
+\item \verb|pyfits| access to \textsc{fits} files,
+\item \verb|pyraf| access to all \textsc{iraf} functions from Python\footnote{Also comes with a Python interpreter based shell to replace \emph{cl}}.
+\end{itemize}
+%\section{Reading and writing data}
+%One of the most frequently performed tasks is reading and writing data, to and from file.
+%There are several ways to do this, and the method chosen depends on the type and amount of data to be read/written.
+%In this workshop I will discuss the most common case of simple \textsc{ascii} text files with whitespace or comma separated fields.
+%\subsection{Reading text files}
+%This section introduces the reader to the concepts needed to read and write arbitrary text based data.
+%Although we use the example of a table if this is really what you want to do you may want to look at the functions \verb|loadtxt| and \verb|savetxt| from the \verb|numpy| package which can read and write arrays using one line of code, as is described in section \ref{numpy_io}.
+%
+%We consider the following text file, stored in \verb|temp.dat|.
+%\begin{Verbatim}
+%one apple 0.0
+%two pear 0.15
+%three orange 0.6
+%four grape 1.35
+%five lemon 2.4
+%six strawberry 3.75
+%\end{Verbatim}
+%We would like to write a function which reads this file and returns a nested list such that \verb|list[1][2]==0.15|.
+%
+%The function:
+%\begin{lstlisting}
+%f=open("temp.dat",'r')
+%\end{lstlisting}
+%opens the file for reading and returns a file object \verb|f|.
+%The method \verb|readlines()| loops through the file and returns a list consisting of all the lines in the file:
+%\begin{lstlisting}
+%>>> f=open("temp.dat",'r')
+%>>> f.readlines()
+%['one apple 0.0\n', 'two pear 0.15 bee\n', 'three orange 0.6\n',
+%'four grape 1.35\n', 'five lemon 2.4 ant\n', 'six strawberry 3.75\n']
+%\end{lstlisting}
+%This is not what we want.
+%There are three more steps to get to our desired table (nested list):
+%\begin{itemize}
+%\item strip off the newline characters (use \verb|strip()|),
+%\item split each line into a list (using whitespace as a separator) (use \verb|split()|),
+%\item the last element of each line to a float, simply use \verb|float()|.
+%\end{itemize}
+%The following function does exactly this:
+%\begin{lstlisting}
+%>>> def read_table(filename):
+%...     f=open(filename,'r')
+%...     table=[]
+%...     for line in f.readlines():
+%...             row=[]
+%...             for item in line.strip().split():
+%...                     row.append(item)
+%...             row[2]=float(row[2])
+%...             table.append(row)
+%...     f.close()
+%...     return table
+%... 
+%>>> read_table("temp.dat")
+%[['one', 'apple', 0.0],
+%['two', 'pear', 0.14999999999999999, 'bee'],
+%['three', 'orage', 0.59999999999999998],
+%['four', 'grape', 1.3500000000000001],
+%['five', 'lemon', 2.3999999999999999, 'ant'],
+%['six', 'strawberry', 3.75]]
+%>>> table=read_table("temp.dat")
+%>>> table[0][1]
+%'apple'
+%\end{lstlisting}
+%\subsection{Writing text files}
+%Writing text files is just as easy and can be performed in just four steps:
+%\begin{lstlisting}
+%>>> a=['hello',2,3]
+%>>> b=[1,'world',9]
+%>>> f=open("output.dat",'w') # Open the file for writing
+%>>> for i in range(len(a)): # Loop through the list
+%...     s=str(a[i])+"\t"+str(b[i])+"\n" # Create a line to write
+%...     f.write(s) # Write the line to file
+%... 
+%>>> f.close() # Close the file
+%\end{lstlisting}
+%As you can see in this example the file, although it had a table form, consisted of mixed types (strings and floating point numbers).
+%This example was designed to show you the tools needed to read in text files with arbitrary formatting.
+%
+%Often however, you will need to work with tables containing only numerical values.
+%In this case you should use the \verb|loadtxt()| and \verb|savetxt()| functions from the \emph{numpy} package as described below.
+%\subsection{Storing variables for reuse in Python programs}
+%Often you need to store some variables to be reused later in the same program or another Python program.
+%
+%Rather than have users be constantly writing and debugging code to save complicated data types, Python provides a standard module called pickle.
+%This is an amazing module that can take almost any Python object, and convert it to a string representation; this process is called pickling.
+%Reconstructing the object from the string representation is called unpickling.
+%Between pickling and unpickling, the string representing the object may have been stored in a file or data, or sent over a network connection to some distant machine.
+%
+%If you have an object \verb|x|, and a file object \verb|f| thats been opened for writing, the simplest way to pickle the object takes only one line of code:
+%\begin{lstlisting}
+%pickle.dump(x, f)
+%\end{lstlisting}
+%To unpickle the object again, if \verb|f| is a file object which has been opened for reading:
+%\begin{lstlisting}
+%x = pickle.load(f)
+%\end{lstlisting}
+%
+%This is the standard way to store Python objects but is not that useful for storing final results (because the file format is rather complex).
+\section{Numerics with numpy}
+Python includes a very flexible \verb|list| type which we have discussed above.
+This datatype is designed to be used for all kinds of operations, however this flexibility comes at a cost, it is relatively slow and not so convenient for numerical operations\footnote{Calculating the sine of each element requires looping over the list.}.
+
+The \verb|numpy| module provides Python support for very fast arrays to be used in numerical calculations, as well as functions to manipulate these arrays.
+For numerics you should always use the numpy package, the build in \verb|list| datatype can be used for all other operations.
+In contrast to \verb|list| a numpy \verb|array| can hold data of only one type (float,complex, etc).
+
+\subsection{Generating arrays}
+It is customary to import \verb|numpy| using:
+\begin{lstlisting}
+>>> import numpy as np
+\end{lstlisting}
+You can then convert a Python list to a numpy array using:
+\begin{lstlisting}
+>>> a=[0,2,3,42,23,1]
+>>> b=np.array(a)
+>>> b
+array([ 0,  2,  3, 42, 23,  1])
+\end{lstlisting}
+Or directly:
+\begin{lstlisting}
+>>> b=np.array([0,2,3,42,23,1])
+>>> b
+array([ 0,  2,  3, 42, 23,  1])
+\end{lstlisting}
+
+Numpy arrays can have arbitrary \emph{shapes} (dimensions).
+\begin{lstlisting}
+>>> b=np.array([[0,2,3],[42,23,1]])
+>>> b
+array([[ 0,  2,  3],
+       [42, 23,  1]])
+\end{lstlisting}
+Arrays can change shape.
+\begin{lstlisting}
+>>> b.reshape((1,6))
+array([[ 0,  2,  3, 42, 23,  1]])
+>>> b.reshape((3,2))
+array([[ 0,  2],
+       [ 3, 42],
+       [23,  1]])
+\end{lstlisting}
+There are several other useful array generation functions:
+\begin{itemize}
+\item \verb|empty()| generates an empty array;
+\item \verb|ones()/zeros()| generates an array with ones/zeros;
+\item \verb|arange()| similar to \verb|range()|;
+\item \verb|linspace(start,stop,n)| generates a range from \verb|start| to \verb|stop| value with \verb|n| values linearly distributed;
+\item \verb|logspace(start,stop,num)| generates a range from \verb|start| to \verb|stop| value with \verb|m| values logarithmically distributed.
+\end{itemize}
+\subsection{Reading and writing numerical tables}
+\label{numpy_io}
+If you want to read the following table from a \textsc{ascii} text file \verb|test.dat| which contains:
+\begin{Verbatim}
+41234 3124 1234
+32634 2345 123
+12346 6436 234
+23457 2345 689
+\end{Verbatim}
+we may use the \emph{numpy} function \verb|loadtxt()|.
+\begin{lstlisting}
+>>> np.loadtxt('test.dat')
+array([[ 41234.,   3124.,   1234.],
+       [ 32634.,   2345.,    123.],
+       [ 12346.,   6436.,    234.],
+       [ 23457.,   2345.,    689.]])
+\end{lstlisting}
+A useful method\footnote{Function that belongs to an object, in this case a numpy array.} of a numpy \emph{array} for working with tables is \verb|transpose()|.
+This function swaps the two axes, effectively changing rows into columns and vice versa.
+Say we want to print the first column of the file, we may use:
+\begin{lstlisting}
+>>> data=np.loadtxt('test.dat').transpose()
+>>> data[0]
+array([ 41234.,  32634.,  12346.,  23457.])
+\end{lstlisting}
+To write the (now transposed) table back to an \textsc{ascii} file we may use \verb|savetxt()| as follows:
+\begin{lstlisting}
+>>> np.savetxt('output.dat', data)
+\end{lstlisting}
+\subsection{Operations on arrays}
+Operations are performed per element\footnote{Numpy also includes a matrix type which behaves like a matrix under multiplication, etc.} and can include vectorized functions (mathematical functions are included in numpy others can be created using \verb|vectorize|).
+
+When using numpy it is important \emph{not to use the math and cmath packages}, instead you should use the highly optimized math functions from the numpy package itself.
+For a list of all functions in numpy check out the reference documentation at:
+\verb|http://docs.scipy.org/doc/numpy/reference|
+Example functions are given in table \ref{tb:numpy_functions}.
+\begin{table}
+\begin{center}
+\begin{tabular}{ll}
+\verb|log()| & logarithm base $e$\\
+\verb|log10()| & logarithm base $10$\\
+\verb|exp()| & $e^{x}$\\
+\verb|sqrt()| & the square root $\sqrt{x}$\\
+\verb|sin(), cos(), tan()| & trigonometric functions\\
+\verb|arcsin(), arccos(), arctan()| & inverse trigonometric functions\\
+\verb|min(), max(), median()| & minimum, maximum and median\\
+\verb|mean(), std(), var()| & statistics
+\end{tabular}
+\caption{Example functions in numpy.}
+\label{tb:numpy_functions}
+\end{center}
+\end{table}
+
+\begin{lstlisting}
+>>> x=np.linspace(0,2*np.pi,10)
+>>> x
+array([ 0.        ,  0.6981317 ,  1.3962634 ,  2.0943951 ,  2.7925268 ,
+        3.4906585 ,  4.1887902 ,  4.88692191,  5.58505361,  6.28318531])
+>>> y=np.sin(x)
+>>> y
+array([  0.00000000e+00,   6.42787610e-01,   9.84807753e-01,
+         8.66025404e-01,   3.42020143e-01,  -3.42020143e-01,
+        -8.66025404e-01,  -9.84807753e-01,  -6.42787610e-01,
+        -2.44929360e-16])
+>>> x*y
+array([  0.00000000e+00,   4.48750407e-01,   1.37505102e+00,
+         1.81379936e+00,   9.55100417e-01,  -1.19387552e+00,
+        -3.62759873e+00,  -4.81267858e+00,  -3.59000326e+00,
+        -1.53893655e-15])
+\end{lstlisting}
+For more information about numpy see:\\
+\verb|http://www.scipy.org/Tentative_NumPy_Tutorial|.
+\section{Plotting with matplotlib}
+After reading and processing data we would like to plot our results.
+The \verb|matplotlib| library provides extensive support for creating scientific plots.
+\subsection{A simple plot}
+Let's say we have two lists \verb|x|, \verb|y| and we wish to make a plot of \verb|y| against \verb|x|.
+This is just three lines of work:
+\begin{lstlisting}
+import matplotlib.pyplot as plt
+plt.plot(x,y)
+plt.show()
+\end{lstlisting}
+If \verb|x| is not specified it defaults to \verb|range(len(y))|.
+
+The \verb|show()| function hands control of the program over to the plot backend.
+Control is returned to the program as soon as the plot window is closed.
+\subsection{Multiple graphs in one plot}
+Let's say we have another list \verb|z| and we wish to plot this one in the same plot.
+We simply add another plot command before the \verb|show()| function.
+\begin{lstlisting}
+plt.plot(x,y)
+plt.plot(x,z)
+plt.show()
+\end{lstlisting}
+\subsection{Multiple plots in one figure}
+If instead of plotting the lists \verb|y| and \verb|z| on top of each other you want to have two separate plots in the same figure you can use the \verb|subplot()| function.
+\begin{lstlisting}
+plt.subplot(2,1,1)
+plt.plot(x,y)
+plt.subplot(2,1,2)
+plt.plot(x,z)
+plt.show()
+\end{lstlisting}
+The indices in \verb|subplot(i,j,k)| have the following meaning:
+\begin{itemize}
+\item \verb|i| number of subplots in vertical direction;
+\item \verb|j| number of subplots in horizontal direction;
+\item \verb|k| number of current plot (i.e. destination for next \verb|plot()| command).
+\end{itemize}
+\subsection{Line styles}
+For every \verb|x, y| pair of arguments, there is a optional third argument which is the format string that indicates the color and line type of the plot. The letters and symbols of the format string are from matlab, and you concatenate a color string with a line style string. The default format string is \verb|'b-'|, which is a solid blue line. For example, to plot the above with red circles, you would issue
+\begin{lstlisting}
+plt.plot(x,y,'ro')
+\end{lstlisting}
+\subsection{Logarithmic scale}
+The simplest way to get a logarithmic x or y scale (or both) is to replace \verb|plot()| with \verb|semilogx()|, \verb|semilogy()| or \verb|loglog()| respectively.
+\subsection{Adding labels}
+It is also easy to add a title and axis labels.
+\begin{lstlisting}
+plt.plot(x,y)
+plt.xlabel('Stuff on the x axis')
+plt.ylabel('Stuff on the y axis')
+plt.title('Example plot')
+plt.show()
+\end{lstlisting}
+The \verb|text(x,y,'string')| command allows for a text string to be placed at any location in the figure (x,y are lower left corner of the text block in plot coordinates).
+
+\subsection{Using \TeX\, expressions} The \verb|matplotlib| backend even includes a \TeX\, expression parser and layout engine so you can use \TeX\, inside plot text. You need to add an \verb|r| in front of the string to use raw strings for this.
+\begin{lstlisting}
+plt.plot(x,y)
+plt.xlabel(r'$\sigma_{i}$')
+plt.ylabel('Stuff on the y axis')
+plt.title('Example plot')
+plt.show()
+\end{lstlisting}
+By default the internal \TeX\, backend is used, but if you have \LaTeX\, installed \verb|matplotlib| can be configured to use that instead.
+\subsection{Other useful plot commands}
+Some other useful plot commands (to be used instead of \verb|plot()| but with similar syntax are):
+\begin{itemize}
+\item \verb|scatter(x,y)| draw a scatter plot of \verb|y| against \verb|x|;
+\item \verb|errorbar(x, y, yerr=None, xerr=None)| plot \verb|y| against \verb|x| with errors specified in the lists \verb|xerr| and \verb|yerr| if one of the two is not \verb|None|.
+\item \verb|hist(y, n)| make a histogram of list \verb|y| divided into \verb|n| bins.
+\item \verb|bar(left, height, width=0.8, bottom=0)| Make a bar plot with rectangles bounded by:
+\begin{Verbatim}
+left, left + width, bottom, bottom + height
+\end{Verbatim}
+(left, right, bottom and top edges)
+\item \verb|polar(theta,r)| draw a polar plot of \verb|r| against \verb|theta|.
+\end{itemize}
+The given functions generally support more arguments and are extremely flexible.
+Finally there are many more functions such as \verb|hist()| which calculates and plots a histogram, \verb|acor()| which calculates and plots the autocorrelation function, etc\ldots
+\appendix
+\section{Documentation}
+The best feature of Python is not the language itself or the huge number of available modules, but it's excellent documentation.
+\begin{itemize}
+\item For a more extensive introduction to Python see the Python tutorial (from which I heavily borrowed in creating this document):\\
+\verb|http://docs.python.org/tutorial/|
+\item For \verb|matplotlib| see:\\
+\verb|http://matplotlib.sourceforge.net/users/pyplot_tutorial.html|\\
+and:\\
+\verb|http://matplotlib.sourceforge.net/users/index.html|
+\item For a simple introduction to fast numerical calculations with \verb|numpy| check out:
+\verb|http://www.scipy.org/Tentative_NumPy_Tutorial|
+\item For reference documentation of all functions in \verb|numpy| see:\\
+\verb|http://docs.scipy.org/doc/numpy/reference|
+\item For reference documentation of all functions in \verb|scipy| see:\\
+\verb|http://docs.scipy.org/doc/scipy/reference|
+\end{itemize}
+\end{document}
